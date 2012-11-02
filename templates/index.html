@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>social-blogger, IE.CUHK</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -29,15 +29,38 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">Project name</a>
+          <a class="brand" href="/">social-blogger</a>
           <div class="nav-collapse collapse">
-               <p class="navbar-text pull-right">
-                     Logged in as <a href="/google_login" class="navbar-link">Username</a>
+              <p class="navbar-text pull-right">
+              %if current_user:
+              <a href="/user/${current_user.id}"class navbar-lin>${current_user.name.encode('U8')}</a>
+              %else:
+              <a href="/google_login" class="navbar-link">Log in</a>
+              %endif
                  </p>
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+                <li
+                %if request.uri == "/":
+                class="active"
+                %endif
+                ><a href="/">Home</a></li>
+                %if current_user:
+                <li\
+                %if "/user/" in request.uri:
+                class="active"\
+                %endif 
+                ><a href="/user/${current_user.id}">Me</a></li>
+                %endif
+                <li\
+                %if "/about" in request.uri:
+                class="active"\
+                %endif 
+                ><a href="/about">About</a></li>
+                <li
+                %if "/contact" in request.uri:
+                class="active"\
+                %endif 
+                ><a href="/contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -46,12 +69,7 @@
 
     <div class="container">
         ${self.container()}
-        <%def name="container()">
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-
     </div> <!-- /container -->
-    </%def>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -71,3 +89,9 @@
 
   </body>
 </html>
+
+<%def name="container()">
+      <h1>social blogger project</h1>
+      <p>we trying to build a congnitive analytic tool, which based on blogger.<br> 
+      maybe as time goes, we can build a platform :)</p>
+</%def>

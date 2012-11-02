@@ -10,6 +10,7 @@ Created on
 """
 
 import tornado.ioloop
+import tornado.autoreload
 import tornado.options
 from tornado.options import define, options
 from app import Application
@@ -21,7 +22,10 @@ def main():
     tornado.options.parse_command_line()
     app = Application()
     app.listen(options.port)
-    tornado.ioloop.IOLoop.instance().start()
+    print "start on port %s..."%options.port
+    instance = tornado.ioloop.IOLoop.instance()
+    tornado.autoreload.start(instance)
+    instance.start()
 
 if __name__ == '__main__':
     main()
