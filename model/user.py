@@ -11,7 +11,7 @@ Created on
 import _env
 from _db import Model
 from time import time
-from session import Session, get_cache, RedisSessionStore, id_binary_decode, id_binary_encode
+#from session import Session, get_cache, RedisSessionStore, id_binary_decode, id_binary_encode
 from os import urandom
 
 #cache = get_cache()
