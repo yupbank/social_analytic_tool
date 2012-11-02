@@ -63,7 +63,7 @@ class GoogleLoginHandler(BaseHandler):
                 'redirect_uri': REDIRECT_URI,
                 'grant_type': 'authorization_code',
                 }
-        self.As_http_client.fetch(GOOGLE_TOKEN, call_back, body=urllib.urlencode(params), method="POST")
+        self.As_http_client.fetch(self.GOOGLE_TOKEN, call_back, body=urllib.urlencode(params), method="POST")
     
     def call_back(self, response):
         res = response.body
@@ -114,5 +114,5 @@ class GoogleLoginHandler(BaseHandler):
         params = urllib.urlencode(params)
         scope = '+'.join(map(urllib.quote, SCOPE))
         params = '%s&scope=%s'%(params, scope)
-        return self.redirect(GOOGLE_AUTHORIZE_API%params)
+        return self.redirect(self.GOOGLE_AUTHORIZE_API%params)
 
