@@ -63,41 +63,41 @@ class GoogleLoginHandler(BaseHandler):
                 'redirect_uri': REDIRECT_URI,
                 'grant_type': 'authorization_code',
                 }
-        self.As_http_client.fetch(self.GOOGLE_TOKEN, call_back, body=urllib.urlencode(params), method="POST")
+        self.As_http_client.fetch(self.GOOGLE_TOKEN, self.call_back, body=urllib.urlencode(params), method="POST")
     
     def call_back(self, response):
-        res = response.body
-        res = json.loads(res)
-        access_token = res.get('access_token')
-        url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=%s'%access_token
-        res = httpclient.HTTPClient().fetch(url)
-        res = res.body
-        res = json.loads(res)
-        print res
-        google_id = res['id']
-        token_type = res.get('token_type')
-        id_token = res.get('id_token')
-        expires_time = time.time()+res.get('expires_in')
-        ua = UserAuth.get_or_create(id_token=id_token)
-        ua.expires_time = expires_time
-        ua.token_type = token_type
-        ua.refresh_token = res.get('refresh_token')
-        ua.access_token = access_token
-        if not ua.id:
-            _id = gid()
-            ua.id = _id
-            u = User()
-            u.id = ua.id
-            u.email = res['email']
-            u.google_id = google_id
-            u.picture = res['picture']
-            u.gender = res['gender']
-            u.birthday = res.get('birthday')
-            u.name = res['name']
-            u.save()
-        self.set_secure_cookie('S', str(ua.id))
-        ua.save()
-        return self.redirect('/user/%s'%ua.id)
+        auth = response.body
+        auth = json.loads(auth)
+        access_token = auth.get('access_token')
+        token_type = auth.get('token_type')
+        id_token = auth.get('id_token')
+        expires_time = time.time()+auth.get('expires_in')
+        info_url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=%s'%access_token
+        self.As_http_client.fetch(info_url, self.prase_user(auth))
+        return
+
+    def prase_user(self, auth):
+        def _(response):
+            user_info = response.body
+            user_info = json.loads(user_info)
+            google_id = user_info['id']
+            ua = UserAuth.get_or_create(id=google_id)
+            ua.expires_time = time.time()+auth.get('expires_in')
+            ua.access_token = auth.get('access_token')
+            ua.id_token = auth.get('id_token')
+            ua.refresh_token = auth.get('refresh_token')
+            ua.save()
+            u = User.get_or_create(id=google_id)
+            if not u.email:
+                u.emial = user_info.get('email')
+                u.picture = user_info['picture']
+                u.gender = user_info['gender']
+                u.birthday = user_info.get('birthday')
+                u.name = user_info['name']
+                u.save()
+            self.set_secure_cookie('S', google_id)
+            return self.redirect('/user/%s'%google_id)
+        return _
 
 
 

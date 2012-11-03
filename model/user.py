@@ -52,8 +52,6 @@ if __name__ == "__main__":
     for i in UserAuth.where():
         u = User.get(i.id)
         if u:
-        #x = User.get(100012)
-        #x.delete()
-            print u.name, u.google_id
+            print u.name.encode('U8')
             print i.id, i.expire_time
             print md5.md5(i.id_token).hexdigest()
