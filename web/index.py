@@ -93,7 +93,7 @@ class GoogleLoginHandler(BaseHandler):
                 u.picture = user_info['picture']
                 u.gender = user_info['gender']
                 u.birthday = user_info.get('birthday')
-                u.name = user_info['name']
+                u.name = user_info['name'].encode('U8')
                 u.save()
             self.set_secure_cookie('S', google_id)
             return self.redirect('/user/%s'%google_id)
