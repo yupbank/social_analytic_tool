@@ -12,7 +12,7 @@ Created on
 import tornado.web
 import os.path
 import uuid
-from web import IndexHandler, GoogleLoginHandler, Login, UserHandler, Contact, About
+from web import IndexHandler, GoogleLoginHandler, Login, UserHandler, Contact, About, Logout
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -23,6 +23,7 @@ class Application(tornado.web.Application):
             (r"/user/(\d+)", UserHandler),
             (r"/contact", Contact),
             (r"/about", About),
+            (r"/logout", Logout),
         ]
         settings = dict(
             cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",

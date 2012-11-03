@@ -69,6 +69,12 @@ class GoogleLoginHandler(BaseHandler):
         res = response.body
         res = json.loads(res)
         access_token = res.get('access_token')
+        url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=%s'%access_token
+        res = httpclient.HTTPClient().fetch(url)
+        res = res.body
+        res = json.loads(res)
+        print res
+        google_id = res['id']
         token_type = res.get('token_type')
         id_token = res.get('id_token')
         expires_time = time.time()+res.get('expires_in')
@@ -80,12 +86,6 @@ class GoogleLoginHandler(BaseHandler):
         if not ua.id:
             _id = gid()
             ua.id = _id
-            url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=%s'%access_token
-            res = httpclient.HTTPClient().fetch(url)
-            res = res.body
-            res = json.loads(res)
-            print res
-            google_id = res['id']
             u = User()
             u.id = ua.id
             u.email = res['email']

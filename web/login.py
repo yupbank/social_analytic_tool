@@ -15,3 +15,8 @@ from base import BaseHandler
 class Login(BaseHandler):
     def get(self):
         return self.render('login.html')
+
+class Logout(BaseHandler):
+    def get(self):
+        self.clear_cookie("S")
+        return self.render('logout.html')

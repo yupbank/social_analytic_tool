@@ -48,7 +48,12 @@ class UserAuth(Model):
 #        return user_id
 
 if __name__ == "__main__":
-    #print user_session(100002)
-    s = _session[100002]
-    print s, '!!!'
-    print user_id_by_session('ooYBAAasVNLNn38R2AvOF0')
+    import md5
+    for i in UserAuth.where():
+        u = User.get(i.id)
+        if u:
+        #x = User.get(100012)
+        #x.delete()
+            print u.name, u.google_id
+            print i.id, i.expire_time
+            print md5.md5(i.id_token).hexdigest()

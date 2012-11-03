@@ -9,6 +9,6 @@ Created on
 2012-11-02
 '''
 from index import IndexHandler, GoogleLoginHandler
-from login import Login
+from login import Login, Logout
 from user import UserHandler
 from info import About, Contact
