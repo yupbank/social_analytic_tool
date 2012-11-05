@@ -41,27 +41,8 @@
         <div class="container">
           <a class="brand" href="/">social-blogger</a>
           <div class="nav-collapse collapse">
-              <p class="navbar-text pull-right">
-              %if current_user:
-                <li class="dropdown pull-right" style="list-style:none;">
-              <a href="/user/${current_user.id}"class="navbar-lin dropdown-toggel"data-toggle="dropdown">${current_user.name.encode('U8')}<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/logout">Logout</a></li>
-                <!--  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li> -->
-                  <li class="divider"></li>
-                 <!-- <li class="nav-header">Nav header</li>
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li> -->
-                </ul>
-              </li>
-
-<!--              <a href="/user/${current_user.id}"class="navbar-lin dropdown-toggel">${current_user.name.encode('U8')}<b class="caret"></b></a> -->
-              %else:
-              <a href="/google_login" class="navbar-link">Log in</a>
-              %endif
-                 </p>
+            ##  <p class="navbar-text pull-right">
+             ##    </p>
             <ul class="nav">
                 <li
                 %if request.uri == "/":
@@ -74,12 +55,12 @@
                 class="active"\
                 %endif 
                 ><a href="/user/${current_user.id}">Me</a></li>
+                %endif
                 <li\
                 %if "/group" in request.uri:
                 class="active"\
                 %endif 
                 ><a href="/groups/">Groups</a></li>
-                %endif
                 <li\
                 %if "/about" in request.uri:
                 class="active"\
@@ -90,6 +71,19 @@
                 class="active"\
                 %endif 
                 ><a href="/contact">Contact</a></li>
+            </ul>
+            <ul class="pull-right nav ">
+            %if current_user:
+                <li class="dropdown" >
+                  <a href="/user/${current_user.id}"class="dropdown-toggel"data-toggle="dropdown"><b class="caret"></b>${current_user.name.encode('U8')}</a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/logout">Logout</a></li>
+                      <li class="divider"></li>
+                  </ul>
+                </li>
+          %else:
+              <a href="/google_login" class="navbar-link">Log in</a>
+          %endif
             </ul>
           </div><!--/.nav-collapse -->
         </div>

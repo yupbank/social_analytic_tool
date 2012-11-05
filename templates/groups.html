@@ -2,13 +2,13 @@
 <%def name="container(next)">
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span1">
-         <small>create your own groups <a href="/group/new/"> check it </a></small>
+    <div class="span1 offset1">
+         <big><a href="/group/new/">create</a> your own group</big>
       <!--Body sidebar-->
     </div>
     <div class="span10">
         %for group in groups:
-        <div class="span2 offset3">
+        <div class="span5">
         <h2> <a href="/group/${group.id}">${group.name.encode('U8')}</a><h2>
         <small>${group.description.encode('U8')}
         <a href="/group/${group.id}/add">add this</a>
