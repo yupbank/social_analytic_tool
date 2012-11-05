@@ -10,7 +10,7 @@ Created on
 """
 import _env
 from model import User, UserAuth
-BLOGGER_INFO = 'https://www.googleapis.com/blogger/v3/users/%s/blogs?access_token=%s'
+BLOGGER_INFO = 'https://www.googleapis.com/blogger/v3/users/self/blogs?access_token=%s'
 import requests
 
 def main():
@@ -19,7 +19,7 @@ def main():
         print user.name.encode('U8')
         ua = UserAuth.get(id=user.id)
         access_token = ua.access_token
-        s = requests.get(BLOGGER_INFO%(user_id, access_token))
+        s = requests.get(BLOGGER_INFO%access_token)
         print s.content
 
 

@@ -10,10 +10,14 @@ Created on
 '''
 import _env
 from _db import Model
-from time import time
+import time
 #from session import Session, get_cache, RedisSessionStore, id_binary_decode, id_binary_encode
 from os import urandom
-
+from config import CLIENT_ID, CLIENT_SECRET
+GOOGLE_REFRESH_API = 'https://accounts.google.com/o/oauth2/token'
+import requests
+import urllib
+import json
 #cache = get_cache()
 #store = RedisSessionStore(cache)
 #_session = Session.get_session(redis_store=store)
@@ -22,8 +26,24 @@ class User(Model):
     pass
 
 class UserAuth(Model):
-    pass
 
+    def get_access_token(self):
+        expire_time = time.mktime(time.strptime(self.expire_time, '%Y-%m-%d %H:%M:%S'))
+        if expire_time < time.time():
+            data = dict(
+                    client_id = CLIENT_ID,
+                    client_secret = CLIENT_SECRET,
+                    refresh_token = self.refresh_token,
+                    grant_type = 'refresh_token'
+                    )
+            res = requests.post(GOOGLE_REFRESH_API, urllib.urlencode(data),  headers = {
+                        'content-type': 'application/x-www-form-urlencoded',})
+            res = json.loads(res.content)
+            self.access_token = res.get('access_token')
+            expire_time = time.time() + res.get('expires_in')
+            self.expire_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(expire_time))
+            self.save()
+        return self.access_token
 #def user_session(user_id):
 #    s = _session[user_id]
 #    print s, '!!!'
@@ -50,8 +70,4 @@ class UserAuth(Model):
 if __name__ == "__main__":
     import md5
     for i in UserAuth.where():
-        u = User.get(i.id)
-        if u:
-            print u.name.encode('U8')
-            print i.id, i.expire_time
-            print md5.md5(i.id_token).hexdigest()
+        print i.get_access_token()

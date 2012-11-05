@@ -48,3 +48,4 @@ else:
     CLIENT_ID = '727469625538.apps.googleusercontent.com'
     CLIENT_SECRET = 'DT97zk6SlgDSwjODibHmO5nK'
     REDIRECT_URI = 'http://social-blogger.tk/google_login'
+BROWSE_KEY = 'AIzaSyCQP1O5vJmsG0p2Z1vjAtzLDgC7WWnhnpo'

@@ -1,0 +1,23 @@
+<%inherit file="_base.html" />
+<%def name="container(next)">
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span1">
+         <small>create your own groups <a href="/group/new/"> check it </a></small>
+      <!--Body sidebar-->
+    </div>
+    <div class="span10">
+        %for group in groups:
+        <div class="span2 offset3">
+        <h2> <a href="/group/${group.id}">${group.name.encode('U8')}</a><h2>
+        <small>${group.description.encode('U8')}
+        <a href="/group/${group.id}/add">add this</a>
+        </small>
+        </div>
+        %endfor
+      <!--Sidebar content-->
+    </div>
+  </div>
+</div>
+</%def>
+${self.container}

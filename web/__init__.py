@@ -12,3 +12,4 @@ from index import IndexHandler, GoogleLoginHandler
 from login import Login, Logout
 from user import UserHandler
 from info import About, Contact
+from group import GroupHandler, NewGroupHandler, GroupList, AddGroupHandler

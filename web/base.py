@@ -60,6 +60,7 @@ class BaseHandler(tornado.web.RequestHandler):
         kwds['current_user'] = current_user
         kwds['request'] = self.request
         kwds['this'] = self
+        kwds['xsrf'] = self.xsrf_form_html()
         #kwds.update(RENDER_KWDS)
         mytemplate = MYLOOKUP.get_template(template_name)
         content = mytemplate.render(**kwds)
@@ -72,3 +73,9 @@ class BaseHandler(tornado.web.RequestHandler):
         if user_id:
             user = User.get(user_id)
             return user
+
+class LoginHandler(BaseHandler):
+    def prepare(self):
+        if not self.current_user:
+            return self.redirect('/login')
+

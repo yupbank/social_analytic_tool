@@ -69,9 +69,6 @@ class GoogleLoginHandler(BaseHandler):
         auth = response.body
         auth = json.loads(auth)
         access_token = auth.get('access_token')
-        token_type = auth.get('token_type')
-        id_token = auth.get('id_token')
-        expires_time = time.time()+auth.get('expires_in')
         info_url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=%s'%access_token
         self.As_http_client.fetch(info_url, self.prase_user(auth))
         return
@@ -82,8 +79,11 @@ class GoogleLoginHandler(BaseHandler):
             user_info = json.loads(user_info)
             google_id = user_info['id']
             ua = UserAuth.get_or_create(id=google_id)
-            ua.expires_time = time.time()+auth.get('expires_in')
+            expire_time = auth.get('expires_in')+time.time()
+            expire_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(expire_time))
+            ua.expire_time =expire_time 
             ua.access_token = auth.get('access_token')
+            ua.token_type = auth.get('token_type')
             ua.id_token = auth.get('id_token')
             ua.refresh_token = auth.get('refresh_token')
             ua.save()
@@ -93,7 +93,7 @@ class GoogleLoginHandler(BaseHandler):
                 u.picture = user_info['picture']
                 u.gender = user_info['gender']
                 u.birthday = user_info.get('birthday')
-                u.name = user_info['name'].encode('U8')
+                u.name = user_info['name']
                 u.save()
             self.set_secure_cookie('S', google_id)
             return self.redirect('/user/%s'%google_id)
