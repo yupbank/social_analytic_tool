@@ -388,3 +388,9 @@ class Model(object):
         ins.save()
 
         return ins
+
+    @classmethod
+    def get_list(cls, id_list):
+        res = []
+        id_list = tuple(id_list)
+        return cls.where('id in (%s)'%(','.join([str(i) for i in id_list])))

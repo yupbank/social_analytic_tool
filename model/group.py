@@ -22,7 +22,7 @@ class Group(Model):
 
 def add_group(id, user_id, state=CID_MEMBER):
     g = Group.get_or_create(group_id=id, user_id=user_id)
-    g.sate = state
+    g.state = state
     g.save()
     return g
 
