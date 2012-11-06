@@ -2,11 +2,11 @@
 <%def name="container(next)">
 <div class="container-fluid">
   <div class="row">
-    <div class="span2 ">
+    <div class="span3 ">
          <big><a href="/group/new/">create</a> your own group</big>
       <!--Body sidebar-->
     </div>
-    <div class="span10">
+    <div class="span9">
         %for group in groups:
         <div class="span4" style="background-color:#EEE;margin-bottom:5px;">
         <h2> <a href="/group/${group.id}">${group.name.encode('U8')}</a><h2>

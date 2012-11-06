@@ -10,12 +10,16 @@ Created on
 '''
 import _env
 from user import User, UserAuth
+from blog import Blog, Comment, Post, Author
+from group import Group, GroupInfo
 
+def delete(cls):
+    for s in cls.where():
+        s.delete()
 def main():
-    for s in  User.where():
-        s.delete()
-    for s in  UserAuth.where():
-        s.delete()
+    for i in [User, UserAuth, Blog, Comment, Post, GroupInfo, Group, Author]:
+        delete(i)
+
 
 if __name__ == '__main__':
     main()

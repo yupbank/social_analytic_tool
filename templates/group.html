@@ -1,8 +1,19 @@
 <%inherit file="_base.html" />
+<div class="row">
+    <div class="span4">
+        <h1>${gi.name.encode('U8')}</h1>
+        <br/>
+##<img src="${creater.picture}"/>
+        <p><h2>${gi.description.encode('U8')}</h2>
 
-<h1>${group_name.encode('U8')}</h1>
-<br/>
-${user_count} user add this.
-<h2>create:${creater.name.encode('U8')}</h2>
-<img src="${creater.picture}"/>
-<p>${description.encode('U8')}</p>
+        ##${len(users)} user add this.
+        </p>
+        <small>creator:<a href="/user/${creater.id}">${creater.name.encode('U8')}</a></small>
+        %if not groups.where(user_id=current_user.id):
+        <a href="/group/${gi.id}/add">add this</a>
+        %endif
+    </div>
+    <div class="span4">
+        <h1> reports:</h1>
+    </div>
+</div>

@@ -1,10 +1,13 @@
 <%inherit file="_base.html" />
+<div class="row">
+    <div class="span4">
 <h1>
     here i am :)</h1>
 <p>
 <img src="${current_user.picture}"/>
 </p>
-
+</div>
+<div class="span8">
 <h2> groups i am in </h2>
 
 %for group in my_groups:
@@ -12,3 +15,4 @@
 <span ><a href="/group/${group.group_id}">${group.group_info.name.encode('U8')}</a></span>
 <br />
 %endfor
+</div>

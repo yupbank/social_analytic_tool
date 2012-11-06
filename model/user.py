@@ -30,6 +30,7 @@ class UserAuth(Model):
     def get_access_token(self):
         expire_time = time.mktime(time.strptime(self.expire_time, '%Y-%m-%d %H:%M:%S'))
         if expire_time < time.time():
+            print 'refresh access_token!!!'
             data = dict(
                     client_id = CLIENT_ID,
                     client_secret = CLIENT_SECRET,

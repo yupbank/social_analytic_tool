@@ -24,8 +24,9 @@ class GroupHandler(BaseHandler):
         group_name = gi.name
         creater = User.get(gi.create_id)
         description = gi.description
-        user_count = Group.where(group_id=id).count()
-        return self.render('group.html', group_name=group_name, creater=creater, description=description, user_count=user_count)
+        groups = Group.where(group_id=id)
+        users = User.get_list(groups.col_list(col='user_id'))
+        return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users)
 
 
 class AddGroupHandler(LoginHandler):

@@ -48,6 +48,7 @@ CREATE TABLE `blog` (
   `link` varchar(150) DEFAULT NULL,
   `total_post` int(11) DEFAULT NULL,
   `published` timestamp NULL DEFAULT NULL,
+  `public_count` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -67,6 +68,7 @@ CREATE TABLE `comment` (
   `updated` timestamp NULL DEFAULT NULL,
   `content` text,
   `author_id` varchar(22) DEFAULT NULL,
+  `reply_to` varchar(22) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -81,7 +83,7 @@ DROP TABLE IF EXISTS `gid`;
 CREATE TABLE `gid` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100021 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100022 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +100,7 @@ CREATE TABLE `group` (
   `state` int(11) DEFAULT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100024 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100025 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,4 +186,4 @@ CREATE TABLE `user_auth` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-05 14:19:02
+-- Dump completed on 2012-11-06 15:01:25
