@@ -181,6 +181,8 @@ def update_commets():
         update_comments_by_post(post)
 
 if __name__ == "__main__":
+    for i in Blog.where():
+        print i.id
     pass
         
 

@@ -9,11 +9,19 @@
         ##${len(users)} user add this.
         </p>
         <small>creator:<a href="/user/${creater.id}">${creater.name.encode('U8')}</a></small>
-        %if not groups.where(user_id=current_user.id):
+        %if current_user and not groups.where(user_id=current_user.id):
         <a href="/group/${gi.id}/add">add this</a>
         %endif
     </div>
-    <div class="span4">
+    <div class="span2">
+        <h2>blogs involved </h2>
+    %for blog in blogs:
+    <a href="${blog.link}" target="_blank">${blog.name.encode('U8')} </a>
+    <br />
+    %endfor
+    </div>
+    <div class="span4 offset1">
         <h1> reports:</h1>
+        
     </div>
 </div>

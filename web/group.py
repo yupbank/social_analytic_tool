@@ -11,7 +11,7 @@ Created on
 import _env
 from base import LoginHandler, BaseHandler
 from tornado.web import HTTPError
-from model import Group, GroupInfo, User
+from model import Group, GroupInfo, User, Blog
 from model.group import new_info, add_group
 from model.cid import CID_CREATE
 import time
@@ -25,8 +25,10 @@ class GroupHandler(BaseHandler):
         creater = User.get(gi.create_id)
         description = gi.description
         groups = Group.where(group_id=id)
-        users = User.get_list(groups.col_list(col='user_id'))
-        return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users)
+        user_ids = groups.col_list(col='user_id')
+        users = User.get_list(user_ids)
+        blogs = Blog.where('user_id in (%s)'%','.join(user_ids))
+        return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users, blogs=blogs)
 
 
 class AddGroupHandler(LoginHandler):

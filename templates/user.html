@@ -15,4 +15,13 @@
 <span ><a href="/group/${group.group_id}">${group.group_info.name.encode('U8')}</a></span>
 <br />
 %endfor
+
+<br/>
+<h2> blogs i have </h2>
+%for blog in my_blogs:
+
+<span ><a target="_blank" href="${blog.link}">${blog.name.encode('U8')}</a></span>
+<br />
+%endfor
+<br />
 </div>

@@ -11,3 +11,4 @@ Created on
 from user import User, UserAuth
 from gid import gid
 from group import Group, GroupInfo
+from blog import Blog

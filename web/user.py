@@ -10,12 +10,13 @@ Created on
 '''
 import _env
 from base import BaseHandler, login_required
-from model import Group
+from model import Group, Blog
 
 class UserHandler(BaseHandler):
     @login_required
     def get(self, user_id):
-        my_group = Group.where(user_id=self.current_user.id)
+        my_group = Group.where(user_id=user_id)
         Group.bind_info(my_group)
-        return self.render('user.html', my_groups=my_group)
+        my_blog = Blog.where(user_id=user_id)
+        return self.render('user.html', my_groups=my_group, my_blogs=my_blog)
 
