@@ -35,7 +35,7 @@ def new_blog(blog_id, user_id, name, description, updated, published, link, tota
     blog = Blog.get(id=blog_id, updated=updated)
     if not blog:
         print 'new_blog'
-        blog = Blog(id=blog_id)
+        blog = Blog.get_or_create(id=blog_id)
         blog.user_id = user_id
         blog.name = name
         blog.description = description
@@ -62,6 +62,23 @@ def new_post(post_id, blog_id, user_id, published, updated, link, title, content
         post.author_id = author_id
         post.save()
     return post
+
+def get_comment_by_user_id(user_id):
+    _ = []
+    _.extend(get_blog_comment_by_user_id(user_id) or [])
+    _.extend(get_reply_comment_by_user_id(user_id) or [])
+    return _
+
+def get_blog_comment_by_user_id(user_id):
+    blog_ids = Blog.where(user_id=user_id).col_list(col='id')
+    comment = Comment.get_list(blog_id=blog_ids).where('reply_to is null')
+    return comment
+
+def get_reply_comment_by_user_id(user_id):
+    author = Author.get(user_id=user_id)
+    if author:
+        comment = Comment.where(reply_to=author.id)
+        return comment
 
 def new_comment(comment_id, post_id, blog_id, published, updated, content, author_id, reply_to=None):
     comment = Comment.get(id=comment_id, updated=updated)
@@ -181,9 +198,8 @@ def update_commets():
         update_comments_by_post(post)
 
 if __name__ == "__main__":
-    for i in Blog.where():
-        print i.id
-    pass
+    for i in User.where():
+        print get_comment_by_user_id(i.id)
         
 
 

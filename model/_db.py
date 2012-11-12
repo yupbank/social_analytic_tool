@@ -390,7 +390,12 @@ class Model(object):
         return ins
 
     @classmethod
-    def get_list(cls, id_list):
-        res = []
-        id_list = tuple(id_list)
-        return cls.where('id in (%s)'%(','.join([str(i) for i in id_list])))
+    def get_list(cls, *args, **kwargs):
+        _args = kwargs
+        if args:
+            _args.update({'id': args})
+        t = cls
+        for k, v in _args.iteritems():
+            v = tuple(v)
+            t = t.where('%s in (%s)'%(k, ','.join([str(i) for i in v])))
+        return t
