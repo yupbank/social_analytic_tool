@@ -10,20 +10,21 @@ Created on
 '''
 import _env
 from base import BaseHandler, login_required
-from model import Group, Blog
+from model import Group, Blog, User
 from model.blog import get_comment_by_user_id, get_user_id_by_author_id
 from collections import defaultdict
 import json
 
 class UserHandler(BaseHandler):
-    @login_required
+    #@login_required
     def get(self, user_id):
         my_group = Group.where(user_id=user_id)
         Group.bind_info(my_group)
         my_blog = Blog.where(user_id=user_id)
         comments = get_comment_by_user_id(user_id)
         data = self.build_data(comments)
-        return self.render('user.html', my_groups=my_group, my_blogs=my_blog, data=data)
+        user = User.get(user_id)
+        return self.render('user.html', user=user, my_groups=my_group, my_blogs=my_blog, data=data)
     
     def build_data(self, comments, all=True):
         author = defaultdict(list)
