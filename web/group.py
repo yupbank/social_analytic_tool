@@ -30,9 +30,14 @@ class GroupHandler(BaseHandler):
         user_ids = groups.col_list(col='user_id')
         users = User.get_list(user_ids)
         blogs = Blog.where('user_id in (%s)'%','.join(user_ids))
+        return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users, blogs=blogs)
+
+class ReportHandler(BaseHandler):
+    def get(self):
+        id = self.get_argument('id')
         reports = reports_by_group_id(id)
         data = json.dumps(reports)
-        return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users, blogs=blogs, data=data)
+        self.finish(data)
 
 
 class AddGroupHandler(LoginHandler):

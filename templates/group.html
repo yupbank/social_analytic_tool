@@ -1,8 +1,7 @@
 <%inherit file="_base.html" />
 <script src="http://d3js.org/d3.v2.js"></script>
-<script src="http://home.ie.cuhk.edu.hk/~gh012/iems5720/jquery-1.8.2.min.js"></script>
-<script src="http://home.ie.cuhk.edu.hk/~gh012/iems5720/underscore-min.js"></script>
-<script src="http://home.ie.cuhk.edu.hk/~gh012/iems5720/colorbrewer.js"></script>
+        <script src="http://home.ie.cuhk.edu.hk/~gh012/iems5720/underscore-min.js"></script>
+        <script src="http://home.ie.cuhk.edu.hk/~gh012/iems5720/colorbrewer.js"></script>
 <style>
 
             h1, h2, h3, h4 {
@@ -70,10 +69,10 @@
     </div>
     <div class="span4 offset1">
         <h1> reports:</h1>
-        
     </div>
+    <div id="chart"></div>
     <script>
-        var data = ${data|n};
+
  $(document).ready(function() {
                     var width = 800, height = 700;
 
@@ -86,13 +85,14 @@
                     .attr("width", width)
                     .attr("height", height);
 
+                    d3.json('report?id=${gi.id}', function(json) {
                         
-                        var max_w = _.max(_.map(data.nodes, function(d) { return d.weight; }));
+                        var max_w = _.max(_.map(json.nodes, function(d) { return d.weight; }));
                         var quantize =  d3.scale.quantile().domain([0, max_w]).range(d3.range(7));
-                        var color =  d3.scale.ordinal().domain(d3.range(9)).range(colorbrewer.Blues[9]);
+                        var color =  d3.scale.ordinal().domain(d3.range(9)).range(colorbrewer.Reds[9]);
 
-                        force.nodes(data.nodes)
-                        .links(data.edges)
+                        force.nodes(json.nodes)
+                        .links(json.links)
                         .on("tick", tick)
                         .start();
 
@@ -118,12 +118,12 @@
 
 
                         var marker = svg.selectAll("line.link")
-                        .data(data.edges)
+                        .data(json.links)
                         .enter().append("svg:marker")
                         .attr("orient", "auto");
 
                         var node = svg.append("svg:g").selectAll("circle.node")
-                        .data(data.nodes)
+                        .data(json.nodes)
                         .enter().append("svg:circle")
                         .attr("r", function(d) { return quantize(d.weight) + 4; })
                         .attr("class", "node")
@@ -148,24 +148,24 @@
                         node.append("title")
                             .text(function(d) { return d.name + " in: " + d.in + " out: " + d.out; });
 
-                        var legend = svg.append("svg:g").selectAll("rect")
-                            .data(d3.range(7))
-                            .enter()
-                            .append("rect")
-                            .attr("x", 30)
-                            .attr("y", function(d) { return (d + 1)*14; })
-                            .attr("width", 60)
-                            .attr("height", 13)
-                            .attr("fill", function(d) { return color(8-d); });
+                        ##var legend = svg.append("svg:g").selectAll("rect")
+                        ##    .data(d3.range(7))
+                        ##    .enter()
+                        ##    .append("rect")
+                        ##    .attr("x", 30)
+                        ##    .attr("y", function(d) { return (d + 1)*14; })
+                        ##    .attr("width", 60)
+                        ##    .attr("height", 13)
+                        ##    .attr("fill", function(d) { return color(8-d); });
 
-                        svg.append("text")
-                            .attr("x", 30)
-                            .attr("y", 12)
-                            .text("Most Active");
-                        svg.append("text")
-                            .attr("x", 30)
-                            .attr("y", 14 * 9 - 2)
-                            .text("Least Active");
+                        ##svg.append("text")
+                        ##    .attr("x", 30)
+                        ##    .attr("y", 12)
+                        ##    .text("Most Active");
+                        ##svg.append("text")
+                        ##    .attr("x", 30)
+                        ##    .attr("y", 14 * 9 - 2)
+                        ##    .text("Least Active");
 
                         function tick() {
                             path.attr("d", function(d) {
@@ -179,6 +179,8 @@
                             text.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")";});
 
                         }
+                    });
                 });
+
 </script>
 </div>

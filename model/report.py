@@ -26,9 +26,12 @@ def get_user(user_id):
 def reports_by_group_id(group_id):
     edges = []
     nodes = []
+    index = {}
     _in = defaultdict(int)
     _out = defaultdict(int)
     ids =  user_id_by_group_id(group_id)
+    for n,i in enumerate(ids):
+        index[i] = n
     for user_id in ids:
         user = get_user(user_id)
         blog_id = Blog.get(user_id=user_id).id
@@ -37,11 +40,9 @@ def reports_by_group_id(group_id):
         counts = count_in (comments, user_id, _in, _out)
         for i, j in counts.iteritems():
             target = get_user(i)
-            edge = {'source': user_id,
-                    'source_name': user.name,
-                    'target': i,
-                    'target_name': target.name,
-                    'counts': j,
+            edge = {'source': index[user_id],
+                    'target': index[i],
+                    'value': j,
                     }
             edges.append(edge)
 
@@ -50,11 +51,12 @@ def reports_by_group_id(group_id):
                 'in': _in[i],
                 'out': _out[i],
                 'weight': _in[i]+_out[i],
-                'index': i
+                'index': n,
+                'id':i,
                  }
-            for i in ids
+            for n,i in enumerate(ids)
             ] 
-    return {'nodes': nodes, 'edges': edges}
+    return {'nodes': nodes, 'links': edges}
 
 def count_in(comments, user_id, _in, _out):
     res = {}

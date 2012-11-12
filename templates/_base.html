@@ -91,10 +91,6 @@
     </div>
     ${self.container(next)}
     <%def name="container(next)">
-    <div class="container">
-        ${next.body()}
-    </div> <!-- /container -->
-    </%def>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -111,6 +107,10 @@
     <script src="/static/js/bootstrap-collapse.js"></script>
     <script src="/static/js/bootstrap-carousel.js"></script>
     <script src="/static/js/bootstrap-typeahead.js"></script>
+    <div class="container">
+        ${next.body()}
+    </div> <!-- /container -->
+    </%def>
 
   </body>
 </html>

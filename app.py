@@ -15,6 +15,8 @@ import uuid
 from web import IndexHandler, GoogleLoginHandler, Login, UserHandler, Contact, About, Logout,\
                 GroupHandler, NewGroupHandler, GroupList,\
                 AddGroupHandler
+
+from web.group import ReportHandler
 from web.test import Test
 
 class Application(tornado.web.Application):
@@ -29,6 +31,7 @@ class Application(tornado.web.Application):
             (r"/about", About),
             (r"/logout", Logout),
             (r"/group/(\d+)", GroupHandler),
+            (r"/group/report", ReportHandler),
             (r"/group/(\d+)/add", AddGroupHandler),
             (r"/group/new/", NewGroupHandler),
             (r"/groups/", GroupList),
