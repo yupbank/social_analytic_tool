@@ -100,7 +100,7 @@ CREATE TABLE `group` (
   `state` int(11) DEFAULT NULL,
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100025 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100026 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,4 +186,4 @@ CREATE TABLE `user_auth` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-06 15:01:25
+-- Dump completed on 2012-11-12 16:42:32
