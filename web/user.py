@@ -26,7 +26,7 @@ class UserHandler(BaseHandler):
         return self.render('user.html', my_groups=my_group, my_blogs=my_blog, data=data)
     
     def build_data(self, comments, all=True):
-        autor = defaultdict(list)
+        author = defaultdict(list)
         for i in comments:
             if i.author_id in author:
                 author[i.author_id].append(i.id)
