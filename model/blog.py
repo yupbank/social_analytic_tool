@@ -11,6 +11,7 @@ Created on
 import _env
 from _db import Model
 import requests
+import time
 import md5
 from config import BROWSE_KEY
 from user import User, UserAuth
@@ -50,29 +51,29 @@ def get_author_id_by_user_id(user_id):
         return author.id
 
 def new_blog(blog_id, user_id, name, description, updated, published, link, total_post):
-    blog = Blog.get(id=blog_id, updated=updated)
+    blog = Blog.get(id=blog_id, updated=simplify_google_time(updated))
     if not blog:
         print 'new_blog'
         blog = Blog.get_or_create(id=blog_id)
         blog.user_id = user_id
         blog.name = name
         blog.description = description
-        blog.updated = updated
-        blog.published = published
+        blog.updated = simplify_google_time(updated)
+        blog.published = simplify_google_time(published)
         blog.link = link
         blog.total_post = total_post
         blog.save()
     return blog
 
 def new_post(post_id, blog_id, user_id, published, updated, link, title, content, reply_num, author_id):
-    post = Post.get(id=post_id, updated=updated)
+    post = Post.get(id=post_id, updated=simplify_google_time(updated))
     if not post:
         print 'new_post'
         post = Post(id=post_id)
         post.blog_id = blog_id
         post.user_id = user_id
-        post.published = published
-        post.updated = updated
+        post.published = simplify_google_time(published)
+        post.updated = simplify_google_time(updated)
         post.link = link
         post.title = title
         post.content = content
@@ -99,14 +100,14 @@ def get_reply_comment_by_user_id(user_id):
         return comment
 
 def new_comment(comment_id, post_id, blog_id, published, updated, content, author_id, reply_to=None):
-    comment = Comment.get(id=comment_id, updated=updated)
+    comment = Comment.get(id=comment_id, updated=simplify_google_time(updated))
     if not comment:
         print 'new_comment'
         comment = Comment(id=comment_id)
         comment.post_id = post_id
         comment.blog_id = blog_id
-        comment.published = published
-        comment.updated = updated
+        comment.published = simplify_google_time(published)
+        comment.updated = simplify_google_time(updated)
         comment.content = content
         comment.author_id = author_id
         comment.reply_to = reply_to
@@ -154,6 +155,16 @@ def user_auth_new_blog(user_auth):
         link = item.get('url')
         total_post = item.get('posts', {}).get('totalItems')
         return new_blog(blog_id, user_id, name, description, updated, published, link, total_post)
+
+def simplify_google_time(google_time):
+    _ = google_time
+
+    try:
+        time.strptime(_, '%Y-%m-%d %H:%M:%S')
+    except Exception,e:
+        _.replace('T', ' ')
+        _ = _[:-6]
+    return _
 
 #def blog_pulic_post_count(blog_id):
 #    post_link = POSTS_API%blog_id
