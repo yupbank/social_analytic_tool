@@ -22,6 +22,15 @@ import json
 #store = RedisSessionStore(cache)
 #_session = Session.get_session(redis_store=store)
 
+CACHE_USER = {}
+
+def cache(func):
+    def _(self, id):
+        if not id in CACHE_USER:
+            CACHE_USER[id] = func(self, id)
+        return CACHE_USER[id]
+    return _
+
 class User(Model):
     pass
 

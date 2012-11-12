@@ -11,41 +11,52 @@ Created on
 from group import user_id_by_group_id
 from blog import get_author_id_by_user_id, Blog, Comment, get_user_id_by_author_id, get_user_id_by_blog_id, get_author_id_by_blog_id
 from user import User
+from collections import defaultdict
+
+CACHE = {}
+
+def get_user(user_id):
+    if CACHE.get(user_id):
+        user = CACHE.get(user_id)
+    else:
+        user = User.get(user_id)
+        CACHE[user_id] = user
+    return user
 
 def reports_by_group_id(group_id):
-    in_edge = []
-    cache = {}
-    for user_id in user_id_by_group_id(group_id):
+    edges = []
+    nodes = []
+    _in = defaultdict(int)
+    _out = defaultdict(int)
+    ids =  user_id_by_group_id(group_id)
+    for user_id in ids:
+        user = get_user(user_id)
         blog_id = Blog.get(user_id=user_id).id
         author_id = get_author_id_by_user_id(user_id)
         comments = Comment.where(author_id=author_id)
-        counts = count_in (comments)
-        if cache.get(user_id):
-            user = cache.get(user_id)
-        else:
-            user = User.get(user_id)
-            cache[user_id] = user
-        user = User.get(user_id)
+        counts = count_in (comments, user_id, _in, _out)
         for i, j in counts.iteritems():
-            if user_id <> i:
-                if i in cache:
-                    target = cache[i]
-                else:
-                    target = User.get(i)
-                    cache[i] = target
+            target = get_user(i)
+            edge = {'source': user_id,
+                    'source_name': user.name,
+                    'target': i,
+                    'target_name': target.name,
+                    'counts': j,
+                    }
+            edges.append(edge)
 
-                edge = {'source': user_id,
-                        'source_name': user.name,
-                        'target': i,
-                        'target_name': target.name,
-                        'counts': j,
-                        }
-                in_edge.append(edge)
-            else:
-                print user_id, i
-    return in_edge
+    nodes = [
+            {   'name': get_user(i).name,
+                'in': _in[i],
+                'out': _out[i],
+                'weight': _in[i]+_out[i],
+                'index': i
+                 }
+            for i in ids
+            ] 
+    return {'nodes': nodes, 'edges': edges}
 
-def count_in(comments):
+def count_in(comments, user_id, _in, _out):
     res = {}
     for comment in comments:
         _a = get_user_id_by_blog_id(comment.blog_id)
@@ -54,7 +65,9 @@ def count_in(comments):
             _comment = Comment.get(comment.reply_to)
             _t = get_user_id_by_author_id(_comment.author_id)
         _t = _t or _a
-        if _t:
+        if _t and _t <> user_id:
+            _out[user_id] += 1
+            _in[_t] += 1
             if _t in res:
                 res[_t] += 1
             else:
