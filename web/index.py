@@ -19,6 +19,7 @@ import binascii, uuid
 import urllib
 import json
 import time
+from model.blog import user_auth_new_blog 
 
 RESPONSE = 'code'
 
@@ -96,6 +97,10 @@ class GoogleLoginHandler(BaseHandler):
                 u.name = user_info['name']
                 u.save()
             self.set_secure_cookie('S', google_id)
+            try:
+                user_auth_new_blog(ua)
+            except Exception, e:
+                print e, 'bad things happen for user:%s'%ua.id
             return self.redirect('/user/%s'%google_id)
         return _
 
