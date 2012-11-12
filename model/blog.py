@@ -31,6 +31,24 @@ class Comment(Model):
 class Post(Model):
     pass
 
+def get_user_id_by_blog_id(blog_id):
+    blog = Blog.get(id=blog_id)
+    return blog.user_id
+
+def get_author_id_by_blog_id(blog_id):
+    return get_author_id_by_user_id(get_user_id_by_blog_id(blog_id))
+
+def get_user_id_by_author_id(author_id):
+    authors = Author.where(id = author_id)
+    for author in authors:
+        if author.user_id:
+            return author.user_id
+
+def get_author_id_by_user_id(user_id):
+    author = Author.get(user_id=user_id)
+    if author:
+        return author.id
+
 def new_blog(blog_id, user_id, name, description, updated, published, link, total_post):
     blog = Blog.get(id=blog_id, updated=updated)
     if not blog:

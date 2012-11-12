@@ -26,6 +26,8 @@ def add_group(id, user_id, state=CID_MEMBER):
     g.save()
     return g
 
+def user_id_by_group_id(group_id):
+    return Group.where(group_id=group_id).col_list(col='user_id')
 
 class GroupInfo(Model):
     pass

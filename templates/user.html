@@ -27,7 +27,7 @@
 <br />
 </div>
 <script>
-    var data=  [{"x": 100.0, "y": 100.1}, {"x": 200.0, "y": 200.5}];
+    var data=${data|n};
     var d = {"x": 100.0,
             "y":200.0};
     var svg = d3.select("body").append("svg")

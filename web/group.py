@@ -14,7 +14,9 @@ from tornado.web import HTTPError
 from model import Group, GroupInfo, User, Blog
 from model.group import new_info, add_group
 from model.cid import CID_CREATE
+from model.report import reports_by_group_id
 import time
+import json
 
 class GroupHandler(BaseHandler):
     def get(self, id):
@@ -28,7 +30,9 @@ class GroupHandler(BaseHandler):
         user_ids = groups.col_list(col='user_id')
         users = User.get_list(user_ids)
         blogs = Blog.where('user_id in (%s)'%','.join(user_ids))
-        return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users, blogs=blogs)
+        reports = reports_by_group_id(id)
+        data = json.dumps(reports)
+        return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users, blogs=blogs, data=data)
 
 
 class AddGroupHandler(LoginHandler):
