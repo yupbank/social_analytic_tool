@@ -63,7 +63,8 @@
     <div class="span2">
         <h2>blogs involved </h2>
     %for blog in blogs:
-    <a href="${blog.link}" target="_blank">${blog.name.encode('U8')} </a>
+    <a href="${blog.link}" target="_blank">${blog.name.encode('U8')}, </a> 
+    <br/>visit TA:<a href="/user/${blog.user_id}">${blog.user.name.encode("U8")}</a>
     <br />
     %endfor
     </div>

@@ -18,6 +18,7 @@ from model.report import reports_by_group_id
 import time
 import json
 
+CACHE = {}
 class GroupHandler(BaseHandler):
     def get(self, id):
         gi = GroupInfo.get(id=id)
@@ -28,8 +29,15 @@ class GroupHandler(BaseHandler):
         description = gi.description
         groups = Group.where(group_id=id)
         user_ids = groups.col_list(col='user_id')
-        users = User.get_list(user_ids)
+        users = User.get_list(id=user_ids)
+        for user_id in user_ids:
+            if user_id not in CACHE:
+                for user in users:
+                    if user_id == user.id:
+                        CACHE[user_id] = user
         blogs = Blog.where('user_id in (%s)'%','.join(user_ids))
+        for blog in blogs:
+            blog.user = CACHE[blog.user_id]
         return self.render('group.html', gi=gi, creater=creater, groups=groups, users=users, blogs=blogs)
 
 class ReportHandler(BaseHandler):
