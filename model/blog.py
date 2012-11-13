@@ -90,8 +90,9 @@ def get_comment_by_user_id(user_id):
 
 def get_blog_comment_by_user_id(user_id):
     blog_ids = Blog.where(user_id=user_id).col_list(col='id')
-    comment = Comment.get_list(blog_id=blog_ids).where('reply_to is null')
-    return comment
+    if blog_ids:
+        comment = Comment.get_list(blog_id=blog_ids).where('reply_to is null')
+        return comment
 
 def get_reply_comment_by_user_id(user_id):
     author = Author.get(user_id=user_id)

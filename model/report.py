@@ -34,17 +34,18 @@ def reports_by_group_id(group_id):
         index[i] = n
     for user_id in ids:
         user = get_user(user_id)
-        blog_id = Blog.get(user_id=user_id).id
-        author_id = get_author_id_by_user_id(user_id)
-        comments = Comment.where(author_id=author_id)
-        counts = count_in (comments, user_id, _in, _out)
-        for i, j in counts.iteritems():
-            target = get_user(i)
-            edge = {'source': index[user_id],
-                    'target': index[i],
-                    'value': j,
-                    }
-            edges.append(edge)
+        if Blog.get(user_id=user_id):
+            blog_id = Blog.get(user_id=user_id).id
+            author_id = get_author_id_by_user_id(user_id)
+            comments = Comment.where(author_id=author_id)
+            counts = count_in (comments, user_id, _in, _out)
+            for i, j in counts.iteritems():
+                target = get_user(i)
+                edge = {'source': index[user_id],
+                        'target': index[i],
+                        'value': j,
+                        }
+                edges.append(edge)
 
     nodes = [
             {   'name': get_user(i).name,
