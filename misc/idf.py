@@ -130,7 +130,7 @@ if __name__ == '__main__':
         _ = zip(_, posts)
         _.sort(key = lambda x:x[0], reverse=True)
         for i,j in cut_tail(_):
-            print 'http://localhost:9999/post/%s'%j
+            print 'http://social-blogger.tk/post/%s'%j
         
     
 
