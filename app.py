@@ -17,6 +17,8 @@ from web import IndexHandler, GoogleLoginHandler, Login, UserHandler, Contact, A
                 AddGroupHandler
 
 from web.group import ReportHandler
+from web.post import Post
+from web.user import UserList
 from web.test import Test
 
 class Application(tornado.web.Application):
@@ -27,6 +29,7 @@ class Application(tornado.web.Application):
             (r"/google_login", GoogleLoginHandler),
             (r"/login", Login),
             (r"/user/(\d+)", UserHandler),
+            (r"/users", UserList),
             (r"/contact", Contact),
             (r"/about", About),
             (r"/logout", Logout),
@@ -36,6 +39,7 @@ class Application(tornado.web.Application):
             (r"/group/new/", NewGroupHandler),
             (r"/groups/", GroupList),
             (r"/groups-(\d+)/", GroupList),
+            (r"/post/(\d+)", Post),
         ]
         settings = dict(
             cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",

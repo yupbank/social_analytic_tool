@@ -1,0 +1,5 @@
+<%inherit file="_base.html" />
+
+% for user in users:
+<h2><a href="/user/${user.id}">  ${user.name.encode('U8')} </a></h2>
+%endfor

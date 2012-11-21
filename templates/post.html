@@ -1,0 +1,9 @@
+<%inherit file="_base.html" />
+
+<h1>${post.title}</h1>
+<h2><a href="/user/${user.id}">${user.name.encode('U8')}</a><h2>
+
+<p>
+${post.content.encode('U8')|n}
+</p>
+

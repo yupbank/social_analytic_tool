@@ -106,7 +106,10 @@ def get_similar_post_comment():
     return post_ids, similar, [i[0] for i in comments], comment_rela
 
 
-        
+def cut_tail(l, rate=0.2):
+    t = int(len(l)*rate)
+    return l[:t]
+
 if __name__ == '__main__':
     posts, post_relation, comments, comment_relation = get_similar_post_comment()
     print posts, post_relation
@@ -116,11 +119,18 @@ if __name__ == '__main__':
         print user.name.encode('U8')
         cs = get_comment_by_user_id(user.id)
         _ = np.zeros(len(posts), np.float)
+        l = 0
         for c in cs:
             c_index = comments.index(c.id)
             _ += comment_relation[c_index]
+            l += 1
         _ = np.dot(_, post_relation)
-        print _
+        if l:
+            _ = _/l
+        _ = zip(_, posts)
+        _.sort(key = lambda x:x[0], reverse=True)
+        for i,j in cut_tail(_):
+            print 'http://localhost:9999/post/%s'%j
         
     
 

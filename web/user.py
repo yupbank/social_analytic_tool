@@ -9,7 +9,7 @@ Created on
 2012-11-03
 '''
 import _env
-from base import BaseHandler, login_required
+from base import BaseHandler, login_required, LoginHandler
 from model import Group, Blog, User
 from model.blog import get_comment_by_user_id, get_user_id_by_author_id
 from collections import defaultdict
@@ -43,3 +43,11 @@ class UserHandler(BaseHandler):
             data.append(_)
         print data, '!!!!!!!!!!!!!'
         return json.dumps(data)
+
+class UserList(LoginHandler):
+    def get(self):
+        if self.current_user.id == '112100305315359676269':
+            users = User.where()
+            return self.render('user_list.html', users=users)
+        else:
+            self.redirect('/user/%s'%self.current_user.id)
