@@ -78,7 +78,7 @@ idf = Idf()
 
 def get_similar_post_comment():
     for post in Post.where():
-        idf.append(post.id, post.content)
+        idf.append(post.id, post.content.encode('U8'))
     post_ids = Post.where().col_list(col='id')
     length = len(post_ids)
     similar = np.zeros(length**2, np.float)
