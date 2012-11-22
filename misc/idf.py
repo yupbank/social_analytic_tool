@@ -106,9 +106,9 @@ def get_similar_post_comment():
     return post_ids, similar, [i[0] for i in comments], comment_rela
 
 
-def cut_tail(l, rate=0.2):
+def cut_tail(l, rate=0.5):
     t = int(len(l)*rate)
-    return l[:t]
+    return l[:t][::-1]
 
 if __name__ == '__main__':
     posts, post_relation, comments, comment_relation = get_similar_post_comment()
