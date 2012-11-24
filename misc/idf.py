@@ -77,9 +77,10 @@ class Idf(object):
 idf = Idf()
 
 def get_similar_post_comment():
+    post_ids = []
     for post in Post.where():
+        post_ids.append(post.id)
         idf.append(post.id, post.content.encode('U8'))
-    post_ids = Post.where().col_list(col='id')
     length = len(post_ids)
     similar = np.zeros(length**2, np.float)
     similar = similar.reshape(length, length)
@@ -115,6 +116,7 @@ if __name__ == '__main__':
     print posts, post_relation
 
     print comments, comment_relation
+    value = {}
     for user in User.where():
         print user.name.encode('U8')
         cs = get_comment_by_user_id(user.id)
@@ -129,8 +131,11 @@ if __name__ == '__main__':
             _ = _/l
         _ = zip(_, posts)
         _.sort(key = lambda x:x[0], reverse=True)
+        value[user.id] = _
         for i,j in cut_tail(_):
             print 'http://social-blogger.tk/post/%s'%j
+    from tofromfile import tofile
+    tofile('recommend', value)
         
     
 

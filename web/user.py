@@ -10,21 +10,32 @@ Created on
 '''
 import _env
 from base import BaseHandler, login_required, LoginHandler
-from model import Group, Blog, User
+from model import Group, Blog, User, Post
 from model.blog import get_comment_by_user_id, get_user_id_by_author_id
 from collections import defaultdict
 import json
+from misc.tofromfile import fromfile
 
 class UserHandler(BaseHandler):
     #@login_required
     def get(self, user_id):
+        recommend = []
+        try:
+            t = fromfile('/Users/yupbank/projects/fresh/misc/recommend')
+            recommend = t.get(user_id)
+            if recommend:
+                recommend = Post.get_list(id = [i[1] for i in recommend])
+                
+        except Exception, e:
+            print e
+        
         my_group = Group.where(user_id=user_id)
         Group.bind_info(my_group)
         my_blog = Blog.where(user_id=user_id)
         comments = get_comment_by_user_id(user_id)
         data = self.build_data(comments)
         user = User.get(user_id)
-        return self.render('user.html', user=user, my_groups=my_group, my_blogs=my_blog, data=data)
+        return self.render('user.html', user=user, my_groups=my_group, my_blogs=my_blog, data=data, recommend=recommend)
     
     def build_data(self, comments, all=True):
         author = defaultdict(list)
@@ -51,3 +62,7 @@ class UserList(LoginHandler):
             return self.render('user_list.html', users=users)
         else:
             self.redirect('/user/%s'%self.current_user.id)
+
+if __name__ == "__main__":
+    t = fromfile('../misc/recommend')
+    print t

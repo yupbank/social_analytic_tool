@@ -25,6 +25,12 @@
 <br />
 %endfor
 <br />
+<h2> blogs we recommend </h2>
+%for r in recommend:
+<a href="/post/${r.id}">${r.title.encode('U8')}</a>
+<br />
+%endfor
+
 </div>
 <script>
     var data=${data|n};

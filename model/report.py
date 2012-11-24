@@ -35,10 +35,10 @@ def reports_by_group_id(group_id):
     for user_id in ids:
         user = get_user(user_id)
         if Blog.get(user_id=user_id):
-            blog_id = Blog.get(user_id=user_id).id
+            #blog_id = Blog.get(user_id=user_id).id
             author_id = get_author_id_by_user_id(user_id)
             comments = Comment.where(author_id=author_id)
-            counts = count_in (comments, user_id, _in, _out)
+            counts = count_in(comments, user_id, ids, _in, _out)
             for i, j in counts.iteritems():
                 target = get_user(i)
                 edge = {'source': index[user_id],
@@ -59,7 +59,7 @@ def reports_by_group_id(group_id):
             ] 
     return {'nodes': nodes, 'links': edges}
 
-def count_in(comments, user_id, _in, _out):
+def count_in(comments, user_id, ids, _in, _out):
     res = {}
     for comment in comments:
         _a = get_user_id_by_blog_id(comment.blog_id)
@@ -68,7 +68,7 @@ def count_in(comments, user_id, _in, _out):
             _comment = Comment.get(comment.reply_to)
             _t = get_user_id_by_author_id(_comment.author_id)
         _t = _t or _a
-        if _t and _t <> user_id:
+        if _t and _t <> user_id and _t in ids:
             _out[user_id] += 1
             _in[_t] += 1
             if _t in res:
@@ -78,4 +78,4 @@ def count_in(comments, user_id, _in, _out):
     return res
 
 if __name__ == '__main__':
-    print reports_by_group_id('100021')
+    print reports_by_group_id('100022')

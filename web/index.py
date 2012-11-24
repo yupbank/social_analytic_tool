@@ -20,6 +20,7 @@ import urllib
 import json
 import time
 from model.blog import user_auth_new_blog 
+from model.group import add_group
 
 RESPONSE = 'code'
 
