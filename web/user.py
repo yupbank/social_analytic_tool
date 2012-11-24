@@ -15,13 +15,16 @@ from model.blog import get_comment_by_user_id, get_user_id_by_author_id
 from collections import defaultdict
 import json
 from misc.tofromfile import fromfile
+import os
+
 
 class UserHandler(BaseHandler):
     #@login_required
     def get(self, user_id):
         recommend = []
         try:
-            t = fromfile('/Users/yupbank/projects/fresh/misc/recommend')
+            t = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            t = fromfile('%s/misc/recommend'%t)
             recommend = t.get(user_id)
             if recommend:
                 recommend = Post.get_list(id = [i[1] for i in recommend])
@@ -64,5 +67,4 @@ class UserList(LoginHandler):
             self.redirect('/user/%s'%self.current_user.id)
 
 if __name__ == "__main__":
-    t = fromfile('../misc/recommend')
-    print t
+    print os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '!!!'
