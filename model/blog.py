@@ -146,6 +146,7 @@ def get_comments(blogger_id, post_id, **kwargs):
 def user_auth_new_blog(user_auth):
     access_token = user_auth.get_access_token()
     blog_info = get_blogs(user_auth.id, user_auth.token_type, access_token)
+    print blog_info
     for item in blog_info.get('items', []):
         user_id = user_auth.id
         blog_id = item.get('id')
