@@ -26,10 +26,12 @@
 %endfor
 <br />
 <h2> blogs we recommend </h2>
+%if recommend:
 %for r in recommend:
 <a href="/post/${r.id}">${r.title.encode('U8')}</a>
 <br />
 %endfor
+%endif
 
 </div>
 <script>

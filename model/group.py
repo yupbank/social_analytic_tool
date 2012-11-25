@@ -13,6 +13,8 @@ from _db import Model
 import time
 from gid import gid
 from cid import CID_MEMBER
+from user import User
+
 TMP_GROUP = 100022 
 
 def tem_operate(func):
@@ -26,6 +28,12 @@ class Group(Model):
     def bind_info(cls, groups):
         for i in groups:
             i.group_info = GroupInfo.get(id=i.group_id)
+    
+    @property
+    def users(self):
+        users = self.where(group_id=self.group_id).col_list(col='user_id')
+        return users
+
 @tem_operate
 def add_group(id, user_id, state=CID_MEMBER):
     g = Group.get_or_create(group_id=id, user_id=user_id)
@@ -58,5 +66,7 @@ def new_info(create_id, name, description):
 
 
 if __name__ == '__main__':
-    quit_group('105572065560802366642')
+    #quit_group('105572065560802366642')
+    for i in Group.where():
+        print i.users, i.group_id
     pass

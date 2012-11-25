@@ -27,7 +27,11 @@ class UserHandler(BaseHandler):
             t = fromfile('%s/misc/recommend'%t)
             recommend = t.get(user_id)
             if recommend:
-                recommend = Post.get_list(id = [i[1] for i in recommend])
+                _ = []
+                for i in recommend:
+                    p = Post.get(i[1])
+                    _.append(p)
+                recommend = _
                 
         except Exception, e:
             print e
