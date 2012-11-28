@@ -66,7 +66,5 @@ def new_info(create_id, name, description):
 
 
 if __name__ == '__main__':
-    #quit_group('105572065560802366642')
-    for i in Group.where():
-        print i.users, i.group_id
     pass
+    add_group('103481776027235710328')

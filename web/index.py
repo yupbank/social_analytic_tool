@@ -92,10 +92,10 @@ class GoogleLoginHandler(BaseHandler):
             u = User.get_or_create(id=google_id)
             if not u.email:
                 u.emial = user_info.get('email')
-                u.picture = user_info['picture']
-                u.gender = user_info['gender']
+                u.picture = user_info.get('picture')
+                u.gender = user_info.get('gender')
                 u.birthday = user_info.get('birthday')
-                u.name = user_info['name']
+                u.name = user_info.get('name')
                 u.save()
             self.set_secure_cookie('S', google_id)
             try:
