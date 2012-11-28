@@ -14,10 +14,10 @@ from model.blog import update_blogs, update_posts, update_commets
 def main():
     print 'sync blogs!!'
     update_blogs()
-    print 'sync posts!!'
-    update_posts()
-    print 'sync comments!!'
-    update_commets()
+    #print 'sync posts!!'
+    #update_posts()
+    #print 'sync comments!!'
+    #update_commets()
 
 
 

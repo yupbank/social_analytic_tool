@@ -49,6 +49,7 @@ class UserAuth(Model):
             res = requests.post(GOOGLE_REFRESH_API, urllib.urlencode(data),  headers = {
                         'content-type': 'application/x-www-form-urlencoded',})
             res = json.loads(res.content)
+            print res, '!!!'
             self.access_token = res.get('access_token')
             expire_time = time.time() + res.get('expires_in')
             self.expire_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(expire_time))

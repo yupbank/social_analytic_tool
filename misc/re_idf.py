@@ -109,6 +109,39 @@ def main():
     from tofromfile import tofile
     tofile('recommend', value)
 
+def cut():
+    value = {}
+    users = get_user_by_group(100022)
+    posts, post_relation, comments, comment_relation = user_comment_smilar(users)
+    for user in users:
+        user_comments = comment_by_group_user(100022, user)
+        user_comment = np.zeros(len(posts), np.float)
+        user_comment_length = len(user_comments)
+        for comment in user_comments:
+            comment_index = comments.index(comment.id)
+            user_comment += comment_relation[comment_index]
+        user_comment = np.dot(user_comment, post_relation)
+        if user_comment_length:
+            user_comment = user_comment/user_comment_length
+        user_comment = zip(user_comment, posts)
+        user_comment.sort(key=lambda x:x[0], reverse=True)
+        _ = []
+        res = []
+        for p in posts_by_users([user]):
+            _.append(p.id)
+        print _
+        for i in user_comment:
+            print i[0], '!!'
+            if i[0] not in _:
+                res.append(i)
+        print res
+        length = int(len(res)*0.2)
+        res = res[:length][::-1]
+        value[user] = res 
+    from tofromfile import tofile
+    tofile('re_recommend', value)
+    
+
 
 if __name__ == '__main__':
-    main()
+    cut()
