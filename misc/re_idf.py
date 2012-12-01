@@ -106,6 +106,7 @@ def main():
         user_comment.sort(key=lambda x:x[0], reverse=True)
         value[user] = user_comment
     
+    print 'to_file!!'
     from tofromfile import tofile
     tofile('recommend', value)
 
@@ -144,4 +145,4 @@ def cut():
 
 
 if __name__ == '__main__':
-    cut()
+    main()
