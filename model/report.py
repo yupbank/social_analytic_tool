@@ -78,4 +78,5 @@ def count_in(comments, user_id, ids, _in, _out):
     return res
 
 if __name__ == '__main__':
-    print reports_by_group_id('100022')
+    pass
+    #print reports_by_group_id('100022')

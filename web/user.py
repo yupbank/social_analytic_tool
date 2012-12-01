@@ -14,6 +14,7 @@ from model import Group, Blog, User, Post
 from model.blog import get_comment_by_user_id, get_user_id_by_author_id
 from collections import defaultdict
 import json
+from model.recommend import recommend_top, bind_post, recommend_tail
 from misc.tofromfile import fromfile
 import os
 
@@ -22,17 +23,17 @@ class UserHandler(BaseHandler):
     #@login_required
     def get(self, user_id):
         recommend = []
+        tail_recommend = []
         try:
             t = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             t = fromfile('%s/misc/recommend'%t)
-            recommend = t.get(user_id)
-            if recommend:
-                _ = []
-                for i in recommend:
-                    p = Post.get(i[1])
-                    _.append(p)
-                recommend = _
-                
+            recommend_list = t.get(user_id)
+             
+            if recommend_list:
+                recommend = recommend_top(user_id, recommend_list)
+                recommend = bind_post(recommend)
+                tail_recommend = recommend_tail(user_id, recommend_list)
+                tail_recommend = bind_post(tail_recommend)
         except Exception, e:
             print e
         
@@ -42,7 +43,7 @@ class UserHandler(BaseHandler):
         comments = get_comment_by_user_id(user_id)
         data = self.build_data(comments)
         user = User.get(user_id)
-        return self.render('user.html', user=user, my_groups=my_group, my_blogs=my_blog, data=data, recommend=recommend)
+        return self.render('user.html', user=user, my_groups=my_group, my_blogs=my_blog, data=data, recommend=recommend, tail_recommend=tail_recommend)
     
     def build_data(self, comments, all=True):
         author = defaultdict(list)
@@ -59,7 +60,7 @@ class UserHandler(BaseHandler):
             _["user_id"] = get_user_id_by_author_id(i)
             _["comment_counts"] = len(j)
             data.append(_)
-        print data, '!!!!!!!!!!!!!'
+        #print data, '!!!!!!!!!!!!!'
         return json.dumps(data)
 
 class UserList(LoginHandler):

@@ -106,7 +106,7 @@ def main():
         user_comment.sort(key=lambda x:x[0], reverse=True)
         value[user] = user_comment
     
-    print 'to_file!!'
+    print 'to_file!!', value
     from tofromfile import tofile
     tofile('recommend', value)
 

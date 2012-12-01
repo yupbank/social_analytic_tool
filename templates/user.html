@@ -27,12 +27,19 @@
 <br />
 <h2> blogs we recommend </h2>
 %if recommend:
-%for r in recommend:
-<a href="/post/${r.id}">${r.title.encode('U8')}</a>
+%for r, rate in recommend:
+<a href="/post/${r.id}">${r.title.encode('U8')}</a> ${rate}
 <br />
 %endfor
 %endif
 
+<h2> blogs now recommend </h2>
+%if tail_recommend:
+%for r, rate in tail_recommend:
+<a href="/post/${r.id}">${r.title.encode('U8')}</a> ${rate}
+<br />
+%endfor
+%endif
 </div>
 <script>
     var data=${data|n};

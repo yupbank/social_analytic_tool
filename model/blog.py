@@ -50,6 +50,7 @@ def get_author_id_by_user_id(user_id):
     if author:
         return author.id
 
+
 def new_blog(blog_id, user_id, name, description, updated, published, link, total_post):
     blog = Blog.get(id=blog_id, updated=simplify_google_time(updated))
     if not blog:
@@ -229,8 +230,9 @@ def update_commets():
         update_comments_by_post(post)
 
 if __name__ == "__main__":
-    for i in User.where():
-        print get_comment_by_user_id(i.id)
+    pass
+    #for i in User.where():
+    #    print get_comment_by_user_id(i.id)
         
 
 
